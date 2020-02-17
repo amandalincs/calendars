@@ -3,14 +3,23 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CalendarsApp {
+    private static CalendarsApp app;
     private ArrayList<User> users;
     private User currentUser;
     private Scanner input;
 
-    CalendarsApp(Scanner newInput)
+    private CalendarsApp(Scanner newInput)
     {
         users = new ArrayList<User>();
         input = newInput;
+    }
+
+    public static CalendarsApp getInstance(Scanner newInput)
+    {
+        if (app == null) {
+            app = new CalendarsApp(newInput);
+        }
+        return app;
     }
 
     public ArrayList<User> getUsers()

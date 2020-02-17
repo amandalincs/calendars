@@ -5,7 +5,7 @@ public class Main {
     public static void main(String args[])
     {
         Scanner input = new Scanner(System.in);
-        CalendarsApp app = new CalendarsApp(input);
+        CalendarsApp app = CalendarsApp.getInstance(input);
 
         System.out.println("Welcome to the Calendars App\n    (Enter 'Q' to quit) \n" +
                 "----------------------------\nEnter a username:");

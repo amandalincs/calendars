@@ -6,7 +6,7 @@ public class Calendar {
     private int calendarID;
     private String calendarName;
     private boolean isPrivate;
-    private String timeZone;
+    private TimeZone timeZone;
     private String theme;
     private ArrayList<Event> events;
     private ArrayList<User> sharedUsers;
@@ -25,7 +25,7 @@ public class Calendar {
         yearEventMap = new HashMap<String, ArrayList<Event>>();
     }
 
-    Calendar(String newCalendarName, boolean newIsPrivate, String newTimeZone, String newTheme)
+    Calendar(String newCalendarName, boolean newIsPrivate, TimeZone newTimeZone, String newTheme)
     {
         calendarID = ++currentCalendarID;
         calendarName = newCalendarName;
@@ -92,31 +92,24 @@ public class Calendar {
 
     public String getTimeZone()
     {
-        return timeZone.toUpperCase();
+        return timeZone.getTimeZoneName();
     }
 
-    public void setTimeZone(String newTimeZone)
+    public void setTimeZone(String timeZoneStr)
     {
-        timeZone = newTimeZone;
+        if (timeZoneStr.equalsIgnoreCase("EST"))
+        {
+            timeZone = new EasternStandardTime();
+        }
+        else if (timeZoneStr.equalsIgnoreCase("PST"))
+        {
+            timeZone = new PacificStandardTime();
+        }
     }
 
     public void updateAllEventTimes(String newTimeZone)
     {
-        if ((timeZone.equalsIgnoreCase("EST"))
-        && (newTimeZone.equalsIgnoreCase("PST")))
-        {
-            for (int i = 0; i < events.size(); i++) {
-                events.get(i).convertEventTimes("subtract", 3);
-            }
-        }
-
-        else if ((timeZone.equalsIgnoreCase("PST"))
-                && (newTimeZone.equalsIgnoreCase("EST")))
-        {
-            for (int i = 0; i < events.size(); i++) {
-                events.get(i).convertEventTimes("add", 3);
-            }
-        }
+        timeZone.updateAllEventTimes(newTimeZone, events);
     }
 
     public String getTheme()
