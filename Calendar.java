@@ -106,7 +106,7 @@ public class Calendar {
         && (newTimeZone.equalsIgnoreCase("PST")))
         {
             for (int i = 0; i < events.size(); i++) {
-                events.get(i).subtractThreeHours();
+                events.get(i).convertEventTimes("subtract", 3);
             }
         }
 
@@ -114,7 +114,7 @@ public class Calendar {
                 && (newTimeZone.equalsIgnoreCase("EST")))
         {
             for (int i = 0; i < events.size(); i++) {
-                events.get(i).addThreeHours();
+                events.get(i).convertEventTimes("add", 3);
             }
         }
     }
@@ -140,6 +140,40 @@ public class Calendar {
         dayEventMap.put(newEvent.getDate(), new ArrayList<Event>());
         yearEventMap.put(newEvent.getYear(), new ArrayList<Event>());
         monthEventMap.put(newEvent.getMonth(), new ArrayList<Event>());
+    }
+
+    public void deleteEvent(Event e)
+    {
+        int eventID = e.getEventID();
+
+        dayEventMap.get(e.getDate()).remove(e);
+        if (dayEventMap.get(e.getDate()).size() == 0)
+        {
+            dayEventMap.remove(e.getDate());
+        }
+
+        monthEventMap.get(e.getMonth()).remove(e);
+        if (monthEventMap.get(e.getMonth()).size() == 0)
+        {
+            monthEventMap.remove(e.getMonth());
+        }
+
+        yearEventMap.get(e.getYear()).remove(e);
+        if (yearEventMap.get(e.getYear()).size() == 0)
+        {
+            yearEventMap.remove(e.getYear());
+        }
+
+        events.remove(e);
+        if (eventID < getNumEvents())
+        {
+            e.decrementEventID();
+        }
+    }
+
+    public Event getEventByID(int eventID)
+    {
+        return getEvents().get(eventID);
     }
 
     public int getNumEvents()

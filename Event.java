@@ -66,63 +66,40 @@ public class Event {
         return (date.substring(4, 7) + " " + getYear());
     }
 
-    public void addThreeHours()
+    public void convertEventTimes(String action, int numHours)
     {
         String startHourStr = startTime.substring(0, 2);
         String endHourStr = endTime.substring(0, 2);
         int startHourInt = Integer.parseInt(startHourStr);
         int endHourInt = Integer.parseInt(endHourStr);
-        startHourInt += 3;
-        endHourInt += 3;
+        if (action == "add")
+        {
+            startHourInt += numHours;
+            endHourInt += numHours;
+        }
+        else if (action == "subtract")
+        {
+            startHourInt -= numHours;
+            endHourInt -= numHours;
+        }
         String newStartTime = "";
         String newEndTime = "";
         if (startHourInt < 10)
         {
-            newStartTime = ("0" + Integer.toString(startHourInt) + startTime.substring(2));
+            newStartTime = ("0" + startHourInt + startTime.substring(2));
         }
         else if (startHourInt >= 10)
         {
-            newStartTime = (Integer.toString(startHourInt) + startTime.substring(2));
+            newStartTime = (startHourInt + startTime.substring(2));
         }
 
         if (endHourInt < 10)
         {
-            newEndTime = ("0" + Integer.toString(endHourInt) + endTime.substring(2));
+            newEndTime = ("0" + endHourInt + endTime.substring(2));
         }
         else if (endHourInt >= 10)
         {
-            newEndTime = (Integer.toString(endHourInt) + endTime.substring(2));
-        }
-        startTime = newStartTime;
-        endTime = newEndTime;
-    }
-
-    public void subtractThreeHours()
-    {
-        String startHourStr = startTime.substring(0, 2);
-        String endHourStr = endTime.substring(0, 2);
-        int startHourInt = Integer.parseInt(startHourStr);
-        int endHourInt = Integer.parseInt(endHourStr);
-        startHourInt -= 3;
-        endHourInt -= 3;
-        String newStartTime = "";
-        String newEndTime = "";
-        if (startHourInt < 10)
-        {
-            newStartTime = ("0" + Integer.toString(startHourInt) + startTime.substring(2));
-        }
-        else if (startHourInt >= 10)
-        {
-            newStartTime = (Integer.toString(startHourInt) + startTime.substring(2));
-        }
-
-        if (endHourInt < 10)
-        {
-            newEndTime = ("0" + Integer.toString(endHourInt) + endTime.substring(2));
-        }
-        else if (endHourInt >= 10)
-        {
-            newEndTime = (Integer.toString(endHourInt) + endTime.substring(2));
+            newEndTime = (endHourInt + endTime.substring(2));
         }
         startTime = newStartTime;
         endTime = newEndTime;

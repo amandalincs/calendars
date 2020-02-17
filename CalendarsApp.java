@@ -65,9 +65,6 @@ public class CalendarsApp {
             }
         }
         currentUser.addCalendar(newCalendar);
-//        int calendarID = newCalendar.getCalendarID();
-//
-//        Calendar c = currentUser.getCalendars().get(calendarID-1);
         System.out.println("CALENDAR ADDED: " + getCalendarDetailsStr(newCalendar));
 
         printCurrentUsersCalendars();
@@ -84,14 +81,9 @@ public class CalendarsApp {
             printCurrentUsersCalendars();
             System.out.println("[CALENDAR] Enter the number of the Calendar you wish to delete:");
             int id = Integer.parseInt(input.nextLine());
-            Calendar c = currentUser.getCalendars().get(id-1);
+            Calendar c = currentUser.getCalendarByID(id-1);
             String calendarDetailsStr = getCalendarDetailsStr(c);
-            currentUser.getCalendars().remove(id-1);
-
-            if ((id-1) < numCalendars)
-            {
-                c.decrementCalendarID();
-            }
+            currentUser.deleteCalendar(c);
 
             System.out.println("CALENDAR DELETED: " + calendarDetailsStr);
             printCurrentUsersCalendars();
@@ -109,7 +101,7 @@ public class CalendarsApp {
             printCurrentUsersCalendars();
             System.out.println("[SETTINGS] Enter the number of the Calendar whose settings you wish to update:");
             int id = Integer.parseInt(input.nextLine());
-            Calendar c = currentUser.getCalendars().get(id-1);
+            Calendar c = currentUser.getCalendarByID(id-1);
             String calendarDetailsStr = getCalendarDetailsStr(c);
             System.out.println("UPDATING SETTINGS FOR: " + calendarDetailsStr);
             System.out.println("[SETTINGS] Select the setting you wish to update (name/privacy/timezone/theme):");
@@ -161,7 +153,7 @@ public class CalendarsApp {
             printCurrentUsersCalendars();
             System.out.println("[SHARE] Enter the number of the Calendar you wish to share:");
             int id = Integer.parseInt(input.nextLine());
-            Calendar c = currentUser.getCalendars().get(id-1);
+            Calendar c = currentUser.getCalendarByID(id-1);
             String calendarDetailsStr = getCalendarDetailsStr(c);
             System.out.println("UPDATING PERMISSIONS FOR: " + calendarDetailsStr);
             printAllUsers();
@@ -185,7 +177,7 @@ public class CalendarsApp {
             printCurrentUsersCalendars();
             System.out.println("[EVENT] Enter the number of the Calendar whose events you wish to update:");
             int id = Integer.parseInt(input.nextLine());
-            Calendar c = currentUser.getCalendars().get(id-1);
+            Calendar c = currentUser.getCalendarByID(id-1);
             printCurrentUsersEvents(c);
             System.out.println("[EVENT] Select an EVENT action (add/delete/edit):");
             String eventAction = input.nextLine();
@@ -219,7 +211,7 @@ public class CalendarsApp {
             printCurrentUsersCalendars();
             System.out.println("[VIEW] Enter the number of the Calendar you wish to view:");
             int id = Integer.parseInt(input.nextLine());
-            Calendar c = currentUser.getCalendars().get(id-1);
+            Calendar c = currentUser.getCalendarByID(id-1);
 
             if (view.equalsIgnoreCase("day"))
             {
@@ -302,34 +294,9 @@ public class CalendarsApp {
             printCurrentUsersEvents(c);
             System.out.println("[EVENT] Enter the number of the Event you wish to delete:");
             int id = Integer.parseInt(input.nextLine());
-            Event e = c.getEvents().get(id-1);
+            Event e = c.getEventByID(id-1);
             String eventDetailsStr = getEventDetailsStr(e);
-
-            c.getDayEventMap().get(e.getDate()).remove(e);
-            if (c.getDayEventMap().get(e.getDate()).size() == 0)
-            {
-                c.getDayEventMap().remove(e.getDate());
-            }
-
-            c.getMonthEventMap().get(e.getMonth()).remove(e);
-            if (c.getMonthEventMap().get(e.getMonth()).size() == 0)
-            {
-                c.getMonthEventMap().remove(e.getMonth());
-            }
-
-            c.getYearEventMap().get(e.getYear()).remove(e);
-            if (c.getYearEventMap().get(e.getYear()).size() == 0)
-            {
-                c.getYearEventMap().remove(e.getYear());
-            }
-
-            c.getEvents().remove(id-1);
-
-            if ((id-1) < numEvents)
-            {
-                e.decrementEventID();
-            }
-
+            c.deleteEvent(e);
             System.out.println("EVENT DELETED: " + eventDetailsStr);
         }
     }
@@ -344,7 +311,7 @@ public class CalendarsApp {
             printCurrentUsersEvents(c);
             System.out.println("[EVENT] Enter the number of the Event you wish to edit:");
             int id = Integer.parseInt(input.nextLine());
-            Event e = c.getEvents().get(id-1);
+            Event e = c.getEventByID(id-1);
             String eventDetailsStr = getEventDetailsStr(e);
             System.out.println("EDITING EVENT: " + eventDetailsStr);
             System.out.println("[EVENT] Select the info you wish to edit (name/date/start/end/repeat):");

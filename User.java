@@ -33,6 +33,21 @@ public class User {
         calendars.add(c);
     }
 
+    public void deleteCalendar(Calendar c)
+    {
+        int calendarID = c.getCalendarID();
+        calendars.remove(c);
+        if (calendarID < getNumCalendars())
+        {
+            c.decrementCalendarID();
+        }
+    }
+
+    public Calendar getCalendarByID(int calendarID)
+    {
+        return getCalendars().get(calendarID);
+    }
+
     public int getNumCalendars()
     {
         return calendars.size();
